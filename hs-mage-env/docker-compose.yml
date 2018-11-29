@@ -15,8 +15,7 @@ services:
       PHP_IDE_CONFIG: serverName=magento
     network_mode: "host"
   mysql:
-    build:
-      context: ./.docker/mysql
+    image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: qwerty
       MYSQL_DATABASE: magento
@@ -24,12 +23,16 @@ services:
       MYSQL_PASSWORD: qwerty
     volumes:
       - mysqldata:/var/lib/mysql
+      - ./.docker/mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
     network_mode: "host"
   redis:
-    image: redis:3.2
+    image: redis:5.0
+    volumes:
+      - redisdata:/data
     network_mode: "host"
   mailhog:
     image: mailhog/mailhog
     network_mode: "host"
 volumes:
   mysqldata:
+  redisdata:
