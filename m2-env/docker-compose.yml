@@ -1,0 +1,35 @@
+version: "3"
+services:
+  nginx:
+    build:
+      context: ./.docker/nginx
+    volumes:
+      - .:/var/www/magento
+    network_mode: "host"
+  php:
+    build:
+      context: ./.docker/php
+    volumes:
+      - .:/var/www/magento
+    environment:
+      PHP_IDE_CONFIG: serverName=magento
+      MAGE_MODE: developer
+    network_mode: "host"
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty
+      MYSQL_DATABASE: magento
+      MYSQL_USER: magento
+      MYSQL_PASSWORD: qwerty
+    volumes:
+      - mysqldata:/var/lib/mysql
+    network_mode: "host"
+  redis:
+    image: redis:3.2
+    network_mode: "host"
+  mailhog:
+    image: mailhog/mailhog
+    network_mode: "host"
+volumes:
+  mysqldata:
