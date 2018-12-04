@@ -22,7 +22,7 @@ set -ex
     --admin-lastname='Magento' \
     --admin-email='admin@example.com' \
     --admin-user='admin' \
-    --admin-password='qwerty123' \
+    --admin-password='Qwerty123' \
     --use-sample-data \
     --cleanup-database
 

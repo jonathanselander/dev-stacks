@@ -22,7 +22,7 @@ php install.php \
     --admin_firstname Admin \
     --admin_lastname Magento \
     --admin_username admin \
-    --admin_password qwerty123
+    --admin_password Qwerty123
 
 magerun index:reindex:all
 magerun cache:enable
