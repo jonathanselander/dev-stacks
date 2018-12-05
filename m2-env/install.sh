@@ -31,10 +31,10 @@ set -ex
 ./bin/magento config:set --lock-config dev/debug/debug_logging 1
 ./bin/magento config:set web/unsecure/base_url 'http://magento.localhost/'
 ./bin/magento config:set web/seo/use_rewrites 1
+./bin/magento config:set web/url/use_store 1
 ./bin/magento config:set general/locale/timezone UTC
 ./bin/magento config:set general/locale/code en_US
 
-./bin/magento indexer:reindex
+./bin/magento setup:performance:generate-fixtures ./setup/performance-toolkit/profiles/ce/medium.xml
 ./bin/magento cache:flush
-
 ./bin/magento maintenance:disable
