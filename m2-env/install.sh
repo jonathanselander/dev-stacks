@@ -22,9 +22,7 @@ set -ex
     --admin-lastname='Magento' \
     --admin-email='admin@example.com' \
     --admin-user='admin' \
-    --admin-password='Qwerty123' \
-    --use-sample-data \
-    --cleanup-database
+    --admin-password='Qwerty123'
 
 ./bin/magento maintenance:enable
 
