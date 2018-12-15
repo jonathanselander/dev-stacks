@@ -1,22 +1,22 @@
 FROM php:7.0-fpm
 
 RUN apt-get update && \
-    apt-get install -y ssmtp libmcrypt-dev libxml2-dev libpng-dev libjpeg-dev libfreetype6-dev && \
+    apt-get install -y ssmtp libfreetype6-dev libjpeg-dev libmcrypt-dev libpng-dev libxml2-dev && \
     apt-get clean
 
 RUN docker-php-ext-install mcrypt opcache pdo_mysql soap && \
     docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-freetype-dir=/usr/include/ && \
     docker-php-ext-install gd && \
-    pecl install xdebug && \
     pecl install redis && \
-    docker-php-ext-enable xdebug redis
+    pecl install xdebug && \
+    docker-php-ext-enable redis xdebug
 
-RUN curl -sS https://getcomposer.org/installer | \
+RUN curl https://getcomposer.org/installer | \
     php -- \
-      --install-dir=/usr/local/bin \
-      --filename=composer
+        --install-dir=/usr/local/bin \
+        --filename=composer
 
-RUN curl -sS -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun.phar && \
+RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun.phar && \
     chmod 755 /usr/local/bin/magerun
 
 COPY www.conf /usr/local/etc/php-fpm.d/www.conf
