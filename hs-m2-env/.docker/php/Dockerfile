@@ -7,7 +7,7 @@ RUN apt-get update && \
         libicu-dev \
         libjpeg-dev \
         libmcrypt-dev \
-        libmagickwand-dev
+        libmagickwand-dev \
         libpng-dev \
         libxml2-dev \
         libxslt1-dev && \
