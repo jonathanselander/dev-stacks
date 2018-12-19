@@ -33,6 +33,6 @@ set -ex
 ./bin/magento config:set general/locale/timezone UTC
 ./bin/magento config:set general/locale/code en_US
 
-./bin/magento setup:performance:generate-fixtures ./setup/performance-toolkit/profiles/ce/medium.xml
+./bin/magento setup:performance:generate-fixtures ./setup/performance-toolkit/profiles/ce/small.xml
 ./bin/magento cache:flush
 ./bin/magento maintenance:disable
