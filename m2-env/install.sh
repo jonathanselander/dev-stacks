@@ -27,9 +27,10 @@ set -ex
 ./bin/magento maintenance:enable
 
 ./bin/magento config:set --lock-config dev/debug/debug_logging 1
-./bin/magento config:set web/unsecure/base_url 'http://magento.localhost/'
-./bin/magento config:set web/seo/use_rewrites 1
-./bin/magento config:set web/url/use_store 1
+./bin/magento config:set --lock-config web/unsecure/base_url 'http://magento.localhost/'
+./bin/magento config:set --lock-config web/seo/use_rewrites 1
+./bin/magento config:set --lock-config web/url/use_store 1
+./bin/magento config:set --lock-config catalog/search/engine 'elasticsearch5'
 ./bin/magento config:set general/locale/timezone UTC
 ./bin/magento config:set general/locale/code en_US
 
