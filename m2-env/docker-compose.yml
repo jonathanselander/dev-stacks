@@ -30,6 +30,12 @@ services:
     volumes:
       - redisdata:/data
     network_mode: "host"
+  elasticsearch:
+    build:
+      context: ./.docker/elasticsearch
+    environment:
+      discovery.type: single-node
+    network_mode: "host"
   mailhog:
     image: mailhog/mailhog
     network_mode: "host"
