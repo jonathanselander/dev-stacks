@@ -23,22 +23,27 @@ services:
       MYSQL_USER: magento
       MYSQL_PASSWORD: qwerty
     volumes:
-      - mysqldata:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     network_mode: "host"
   redis:
     image: redis:5.0
     volumes:
-      - redisdata:/data
+      - redis_data:/data
     network_mode: "host"
   elasticsearch:
     build:
       context: ./.docker/elasticsearch
     environment:
       discovery.type: single-node
+      cluster.name: magento
+      xpack.security.enabled: 0
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
     network_mode: "host"
   mailhog:
     image: mailhog/mailhog
     network_mode: "host"
 volumes:
-  mysqldata:
-  redisdata:
+  mysql_data:
+  redis_data:
+  elasticsearch_data:
