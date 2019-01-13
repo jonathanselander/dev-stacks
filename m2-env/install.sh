@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -ex
 
-./bin/magento maintenance:enable
+magerun2 maintenance:enable
 
-./bin/magento setup:install \
+magerun2 setup:install \
     --backend-frontname='admin' \
     --db-host='127.0.0.1' \
     --db-name='magento' \
@@ -24,16 +24,21 @@ set -ex
     --admin-user='admin' \
     --admin-password='Qwerty123'
 
-./bin/magento maintenance:enable
+magerun2 maintenance:enable
 
-./bin/magento config:set --lock-config dev/debug/debug_logging 1
-./bin/magento config:set --lock-config web/unsecure/base_url 'http://magento.localhost/'
-./bin/magento config:set --lock-config web/seo/use_rewrites 1
-./bin/magento config:set --lock-config web/url/use_store 1
-./bin/magento config:set --lock-config catalog/search/engine 'elasticsearch5'
-./bin/magento config:set general/locale/timezone UTC
-./bin/magento config:set general/locale/code en_US
+magerun2 config:set --lock-config dev/debug/debug_logging 1
+magerun2 config:set --lock-config web/unsecure/base_url 'http://magento.localhost/'
+magerun2 config:set --lock-config web/seo/use_rewrites 1
+magerun2 config:set --lock-config web/url/use_store 1
+magerun2 config:set --lock-config catalog/search/engine 'elasticsearch5'
 
-./bin/magento setup:performance:generate-fixtures ./setup/performance-toolkit/profiles/ce/small.xml
-./bin/magento cache:flush
-./bin/magento maintenance:disable
+magerun2 config:set general/locale/timezone UTC
+magerun2 config:set general/locale/code en_US
+
+magerun2 setup:performance:generate-fixtures ./setup/performance-toolkit/profiles/ce/small.xml
+magerun2 cache:flush
+
+magerun2 sys:info
+magerun2 sys:check
+
+magerun2 maintenance:disable

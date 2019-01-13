@@ -11,14 +11,6 @@ RUN docker-php-ext-install pdo_mysql soap opcache && \
     pecl install xdebug && \
     docker-php-ext-enable mcrypt xdebug
 
-RUN curl https://getcomposer.org/installer | \
-    php -- \
-        --install-dir=/usr/local/bin \
-        --filename=composer
-
-RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun.phar && \
-    chmod 755 /usr/local/bin/magerun
-
 COPY www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY php.ini /usr/local/etc/php/php.ini
 COPY ssmtp.conf /etc/ssmtp/ssmtp.conf
@@ -26,6 +18,14 @@ COPY ssmtp.conf /etc/ssmtp/ssmtp.conf
 RUN chmod 644 /usr/local/etc/php-fpm.d/www.conf && \
     chmod 644 /usr/local/etc/php/php.ini && \
     chmod 644 /etc/ssmtp/ssmtp.conf
+
+RUN curl https://getcomposer.org/installer | \
+    php -- \
+        --install-dir=/usr/local/bin \
+        --filename=composer
+
+RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun.phar && \
+    chmod 755 /usr/local/bin/magerun
 
 ARG uid=1000
 ARG gid=1000

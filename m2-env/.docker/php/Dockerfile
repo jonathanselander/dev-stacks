@@ -6,6 +6,7 @@ RUN apt-get update && \
         libfreetype6-dev \
         libicu-dev \
         libjpeg-dev \
+        libmcrypt-dev \
         libpng-dev \
         libxml2-dev \
         libxslt1-dev && \
@@ -14,16 +15,10 @@ RUN apt-get update && \
 RUN docker-php-ext-install bcmath intl pdo_mysql soap xsl zip opcache && \
     docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-freetype-dir=/usr/include/ && \
     docker-php-ext-install gd && \
+    pecl install mcrypt-snapshot && \
     pecl install xdebug && \
+    docker-php-ext-enable mcrypt && \
     docker-php-ext-enable xdebug
-
-RUN curl https://getcomposer.org/installer | \
-    php -- \
-        --install-dir=/usr/local/bin \
-        --filename=composer
-
-RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun2.phar && \
-    chmod 755 /usr/local/bin/magerun
 
 COPY www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY php.ini /usr/local/etc/php/php.ini
@@ -32,6 +27,14 @@ COPY ssmtp.conf /etc/ssmtp/ssmtp.conf
 RUN chmod 644 /usr/local/etc/php-fpm.d/www.conf && \
     chmod 644 /usr/local/etc/php/php.ini && \
     chmod 644 /etc/ssmtp/ssmtp.conf
+
+RUN curl https://getcomposer.org/installer | \
+    php -- \
+        --install-dir=/usr/local/bin \
+        --filename=composer
+
+RUN curl -o /usr/local/bin/magerun2 https://files.magerun.net/n98-magerun2.phar && \
+    chmod 755 /usr/local/bin/magerun2
 
 ARG uid=1000
 ARG gid=1000
