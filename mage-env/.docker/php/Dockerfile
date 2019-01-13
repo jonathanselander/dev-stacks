@@ -4,7 +4,7 @@ RUN apt-get update && \
     apt-get install -y ssmtp libfreetype6-dev libjpeg-dev libmcrypt-dev libpng-dev libxml2-dev && \
     apt-get clean
 
-RUN docker-php-ext-install pdo_mysql soap opcache && \
+RUN docker-php-ext-install opcache pdo_mysql soap && \
     docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-freetype-dir=/usr/include/ && \
     docker-php-ext-install gd && \
     pecl install mcrypt-snapshot && \

@@ -13,7 +13,7 @@ RUN apt-get update && \
         libxslt1-dev && \
     apt-get clean
 
-RUN docker-php-ext-install bcmath intl mcrypt pdo_mysql soap xsl zip opcache && \
+RUN docker-php-ext-install bcmath intl mcrypt opcache pdo_mysql soap xsl zip && \
     docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-freetype-dir=/usr/include/ && \
     docker-php-ext-install gd && \
     pecl install imagick && \
