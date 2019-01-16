@@ -19,9 +19,9 @@ magerun2 setup:install \
     --page-cache-redis-server='127.0.0.1' \
     --page-cache-redis-db='2' \
     --amqp-host='127.0.0.1' \
+    --amqp-virtualhost='magento' \
     --amqp-user='magento' \
     --amqp-password='qwerty' \
-    --amqp-virtualhost='magento' \
     --admin-firstname='Admin' \
     --admin-lastname='Magento' \
     --admin-email='admin@example.com' \
