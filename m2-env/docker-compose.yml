@@ -39,6 +39,15 @@ services:
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     network_mode: "host"
+  rabbitmq:
+    image: rabbitmq:3.7
+    environment:
+      RABBITMQ_DEFAULT_VHOST: magento
+      RABBITMQ_DEFAULT_USER: magento
+      RABBITMQ_DEFAULT_PASS: qwerty
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    network_mode: "host"
   mailhog:
     image: mailhog/mailhog
     network_mode: "host"
@@ -46,3 +55,4 @@ volumes:
   mysql_data:
   redis_data:
   elasticsearch_data:
+  rabbitmq_data:
