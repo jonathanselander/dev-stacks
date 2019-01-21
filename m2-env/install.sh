@@ -29,6 +29,7 @@ magerun2 setup:install \
     --admin-password='Qwerty123'
 
 magerun2 maintenance:enable
+magerun2 deploy:mode:set developer
 
 magerun2 config:set --lock-config dev/debug/debug_logging 1
 magerun2 config:set --lock-config web/unsecure/base_url 'http://magento.localhost/'
