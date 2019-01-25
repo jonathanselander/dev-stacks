@@ -3,16 +3,22 @@ services:
   nginx:
     build:
       context: ./.docker/nginx
+      args:
+        uid: ${UID:-1000}
+        gid: ${GID:-1000}
     volumes:
       - .:/var/www/magento
     network_mode: "host"
   php:
     build:
       context: ./.docker/php
+      args:
+        uid: ${UID:-1000}
+        gid: ${GID:-1000}
     volumes:
       - .:/var/www/magento
     environment:
-      PHP_IDE_CONFIG: serverName=magento
+      PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-serverName=magento}
     network_mode: "host"
   mysql:
     image: mysql:5.7
