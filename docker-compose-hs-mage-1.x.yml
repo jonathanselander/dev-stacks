@@ -2,19 +2,19 @@ version: "3"
 services:
   nginx:
     build:
-      context: ./.docker/nginx
+      context: ./.docker/img-nginx
       args:
-        uid: ${UID:-1000}
-        gid: ${GID:-1000}
+        USER_ID: ${USER_ID:-1000}
+        APP_NAME: ${APP_NAME:-magento}
     volumes:
+      - ./.docker/etc-hs-mage-1.x/nginx.conf:/etc/nginx/nginx.conf:ro
       - .:/var/www/magento
     network_mode: "host"
   php:
     build:
-      context: ./.docker/php
+      context: ./.docker/img-hs-php-mage-1.x
       args:
-        uid: ${UID:-1000}
-        gid: ${GID:-1000}
+        USER_ID: ${USER_ID:-1000}
     volumes:
       - .:/var/www/magento
     environment:
@@ -29,6 +29,7 @@ services:
       MYSQL_PASSWORD: qwerty
     volumes:
       - mysqldata:/var/lib/mysql
+      - ./.docker/etc-hs-mage-1.x/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
     network_mode: "host"
   redis:
     image: redis:5.0
