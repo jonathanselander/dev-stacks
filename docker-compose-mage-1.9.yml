@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 services:
   nginx:
     build:
@@ -8,7 +8,8 @@ services:
         APP_NAME: ${APP_NAME:-magento}
     volumes:
       - ./.docker/etc-mage-1.x/nginx.conf:/etc/nginx/nginx.conf:ro
-      - .:/var/www/magento
+      - ${ROOT_DIR:-.}:/var/www/magento
+      - ${MEDIA_DIR:-./media}:/var/www/magento/pub/media
     network_mode: "host"
   php:
     build:
@@ -16,7 +17,8 @@ services:
       args:
         USER_ID: ${USER_ID:-1000}
     volumes:
-      - .:/var/www/magento
+      - ${ROOT_DIR:-.}:/var/www/magento
+      - ${MEDIA_DIR:-./media}:/var/www/magento/pub/media
     environment:
       PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-serverName=magento}
     network_mode: "host"
