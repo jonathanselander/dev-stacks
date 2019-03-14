@@ -9,7 +9,7 @@ services:
     volumes:
       - ./.docker/etc-mage-1.x/nginx.conf:/etc/nginx/nginx.conf:ro
       - ${ROOT_DIR:-.}:/var/www/magento
-      - ${MEDIA_DIR:-./media}:/var/www/magento/pub/media
+      - ${MEDIA_DIR:-./media}:/var/www/magento/media
     network_mode: "host"
   php:
     build:
@@ -18,7 +18,7 @@ services:
         USER_ID: ${USER_ID:-1000}
     volumes:
       - ${ROOT_DIR:-.}:/var/www/magento
-      - ${MEDIA_DIR:-./media}:/var/www/magento/pub/media
+      - ${MEDIA_DIR:-./media}:/var/www/magento/media
     environment:
       PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-serverName=magento}
     network_mode: "host"

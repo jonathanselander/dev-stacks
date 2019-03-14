@@ -1,0 +1,9 @@
+FROM debian:9
+
+RUN apt update && apt install -y varnish
+
+VOLUME /var/lib/varnish
+EXPOSE 80
+
+ENTRYPOINT /usr/sbin/varnishd -j unix -F -s malloc,1g -a 0.0.0.0:80 -f /etc/varnish/default.vcl \
+                              -p http_resp_size=98304 -p http_resp_hdr_len=65536

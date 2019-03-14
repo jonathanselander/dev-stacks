@@ -31,6 +31,10 @@ magerun2 config:set --lock-config dev/debug/debug_logging 1
 magerun2 config:set --lock-config web/unsecure/base_url 'http://magento.localhost/'
 magerun2 config:set --lock-config web/seo/use_rewrites 1
 magerun2 config:set --lock-config web/url/use_store 1
+magerun2 config:set --lock-config system/full_page_cache/caching_application '2'
+magerun2 config:set --lock-config system/full_page_cache/varnish/access_list '127.0.0.1'
+magerun2 config:set --lock-config system/full_page_cache/varnish/backend_host '127.0.0.1'
+magerun2 config:set --lock-config system/full_page_cache/varnish/backend_port '8080'
 
 magerun2 config:set general/locale/timezone UTC
 magerun2 config:set general/locale/code en_US

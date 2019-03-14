@@ -11,4 +11,6 @@ RUN test -n "${USER_ID:?}" && test -n "${APP_NAME:?}" && \
     chown -R $APP_NAME:$APP_NAME /var/www
 
 WORKDIR /var/www/$APP_NAME
+
 EXPOSE 80
+EXPOSE 8080

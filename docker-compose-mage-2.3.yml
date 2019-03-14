@@ -1,5 +1,12 @@
 version: "3.7"
 services:
+  varnish:
+    build:
+      context: ./.docker/img-varnish
+    volumes:
+      - ./.docker/etc-mage-2.x/varnish.vcl:/etc/varnish/default.vcl:ro
+      - varnish_data:/var/lib/varnish
+    network_mode: "host"
   nginx:
     build:
       context: ./.docker/img-nginx
@@ -60,6 +67,7 @@ services:
     image: mailhog/mailhog
     network_mode: "host"
 volumes:
+  varnish_data:
   mysql_data:
   redis_data:
   elasticsearch_data:
