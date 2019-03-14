@@ -44,10 +44,10 @@ magerun2 config:set --lock-config system/full_page_cache/varnish/backend_port '8
 magerun2 config:set general/locale/timezone UTC
 magerun2 config:set general/locale/code en_US
 
-magerun2 setup:performance:generate-fixtures ./setup/performance-toolkit/profiles/ce/small.xml
+magerun2 setup:performance:generate-fixtures --skip-reindex ./setup/performance-toolkit/profiles/ce/small.xml
+magerun2 indexer:set-mode schedule
+magerun2 indexer:reindex
+
 magerun2 cache:flush
-
 magerun2 sys:info
-magerun2 sys:check
-
 magerun2 maintenance:disable
