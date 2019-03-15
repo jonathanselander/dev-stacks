@@ -47,7 +47,7 @@ services:
     network_mode: "host"
   elasticsearch:
     build:
-      context: ./.docker/img-hs-elasticsearch-mage-2.x
+      context: ./.docker/img-elasticsearch
     environment:
       discovery.type: single-node
       cluster.name: magento

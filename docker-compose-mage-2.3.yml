@@ -46,7 +46,8 @@ services:
       - redis_data:/data
     network_mode: "host"
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.14
+    build:
+      context: ./.docker/img-elasticsearch
     environment:
       discovery.type: single-node
       cluster.name: magento

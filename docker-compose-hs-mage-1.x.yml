@@ -1,5 +1,12 @@
 version: "3.7"
 services:
+  varnish:
+    build:
+      context: ./.docker/img-varnish
+    volumes:
+      - ./.docker/etc-hs-mage-1.x/varnish.vcl:/etc/varnish/default.vcl:ro
+      - varnish_data:/var/lib/varnish
+    network_mode: "host"
   nginx:
     build:
       context: ./.docker/img-nginx
@@ -38,9 +45,21 @@ services:
     volumes:
       - redisdata:/data
     network_mode: "host"
+  elasticsearch:
+    build:
+      context: ./.docker/img-elasticsearch
+    environment:
+      discovery.type: single-node
+      cluster.name: magento
+      xpack.security.enabled: 0
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    network_mode: "host"
   mailhog:
     image: mailhog/mailhog
     network_mode: "host"
 volumes:
+  varnish_data:
   mysqldata:
   redisdata:
+  elasticsearch_data:
