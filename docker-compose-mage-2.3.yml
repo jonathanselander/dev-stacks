@@ -51,7 +51,6 @@ services:
     environment:
       discovery.type: single-node
       cluster.name: magento
-      xpack.security.enabled: 0
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     network_mode: "host"
