@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -ex
 
-magerun2 maintenance:enable
+magerun maintenance:enable
 
-magerun2 setup:install \
+magerun setup:install \
     --backend-frontname='admin' \
     --db-host='127.0.0.1' \
     --db-name='magento' \
@@ -24,25 +24,25 @@ magerun2 setup:install \
     --admin-user='admin' \
     --admin-password='Qwerty123'
 
-magerun2 maintenance:enable
-magerun2 deploy:mode:set developer
+magerun maintenance:enable
+magerun deploy:mode:set developer
 
-magerun2 config:set --lock-config dev/debug/debug_logging 1
-magerun2 config:set --lock-config web/unsecure/base_url 'http://magento.localhost/'
-magerun2 config:set --lock-config web/seo/use_rewrites 1
-magerun2 config:set --lock-config web/url/use_store 1
-magerun2 config:set --lock-config system/full_page_cache/caching_application '2'
-magerun2 config:set --lock-config system/full_page_cache/varnish/access_list '127.0.0.1'
-magerun2 config:set --lock-config system/full_page_cache/varnish/backend_host '127.0.0.1'
-magerun2 config:set --lock-config system/full_page_cache/varnish/backend_port '8080'
+magerun config:set --lock-config dev/debug/debug_logging 1
+magerun config:set --lock-config web/unsecure/base_url 'http://magento.localhost/'
+magerun config:set --lock-config web/seo/use_rewrites 1
+magerun config:set --lock-config web/url/use_store 1
+magerun config:set --lock-config system/full_page_cache/caching_application '2'
+magerun config:set --lock-config system/full_page_cache/varnish/access_list '127.0.0.1'
+magerun config:set --lock-config system/full_page_cache/varnish/backend_host '127.0.0.1'
+magerun config:set --lock-config system/full_page_cache/varnish/backend_port '8080'
 
-magerun2 config:set general/locale/timezone UTC
-magerun2 config:set general/locale/code en_US
+magerun config:set general/locale/timezone UTC
+magerun config:set general/locale/code en_US
 
-magerun2 setup:performance:generate-fixtures --skip-reindex ./setup/performance-toolkit/profiles/ce/small.xml
-magerun2 indexer:set-mode schedule
-magerun2 indexer:reindex
+magerun setup:performance:generate-fixtures --skip-reindex ./setup/performance-toolkit/profiles/ce/small.xml
+magerun indexer:set-mode schedule
+magerun indexer:reindex
 
-magerun2 cache:flush
-magerun2 sys:info
-magerun2 maintenance:disable
+magerun cache:flush
+magerun sys:info
+magerun maintenance:disable

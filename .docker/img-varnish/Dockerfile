@@ -6,4 +6,4 @@ VOLUME /var/lib/varnish
 EXPOSE 80
 
 ENTRYPOINT ["/usr/sbin/varnishd","-j","unix","-F"]
-CMD ["-s","malloc,2g","-a","0.0.0.0:80","-f","/etc/varnish/default.vcl","-p","http_resp_size=98304","-p","http_resp_hdr_len=65536"]
+CMD ["-s","malloc,2g","-a","0.0.0.0:80","-f","/etc/varnish/default.vcl"]

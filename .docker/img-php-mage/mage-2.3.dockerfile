@@ -32,8 +32,8 @@ RUN curl https://getcomposer.org/installer | \
         --install-dir=/usr/local/bin \
         --filename=composer
 
-RUN curl -o /usr/local/bin/magerun2 https://files.magerun.net/n98-magerun2.phar && \
-    chmod 755 /usr/local/bin/magerun2
+RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun2.phar && \
+    chmod 755 /usr/local/bin/magerun
 
 ARG USER_ID
 
