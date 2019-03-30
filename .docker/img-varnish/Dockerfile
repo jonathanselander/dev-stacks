@@ -1,7 +1,7 @@
 FROM debian:9
 
 RUN apt-get update && \
-    apt-get install -y varnish && \
+    apt-get install -y --no-install-recommends varnish && \
     apt-get clean
 
 VOLUME /var/lib/varnish
