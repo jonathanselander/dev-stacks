@@ -43,7 +43,7 @@ magerun config:set --lock-config system/full_page_cache/varnish/backend_port '80
 magerun config:set general/locale/timezone UTC
 magerun config:set general/locale/code en_US
 
-magerun setup:performance:generate-fixtures --skip-reindex ./setup/performance-toolkit/profiles/ce/small.xml
+magerun setup:performance:generate-fixtures --skip-reindex ./setup/performance-toolkit/profiles/ce/${1:-small}.xml
 magerun indexer:set-mode schedule
 magerun indexer:reindex
 
