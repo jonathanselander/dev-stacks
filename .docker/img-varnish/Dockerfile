@@ -1,6 +1,8 @@
 FROM debian:9
 
-RUN apt update && apt install -y varnish
+RUN apt-get update && \
+    apt-get install -y varnish && \
+    apt-get clean
 
 VOLUME /var/lib/varnish
 EXPOSE 80
