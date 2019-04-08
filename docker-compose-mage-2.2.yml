@@ -3,6 +3,7 @@ services:
   varnish:
     build:
       context: ./.docker/img-varnish
+      dockerfile: varnish.dockerfile
     volumes:
       - ./.docker/etc-mage-2.x/varnish.vcl:/etc/varnish/default.vcl:ro
       - varnish_data:/var/lib/varnish
@@ -10,6 +11,7 @@ services:
   nginx:
     build:
       context: ./.docker/img-nginx
+      dockerfile: nginx.dockerfile
       args:
         USER_ID: ${USER_ID:-1000}
         APP_NAME: ${APP_NAME:-magento}
