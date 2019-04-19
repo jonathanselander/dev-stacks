@@ -8,7 +8,7 @@ magerun setup:install \
     --db-host='127.0.0.1' \
     --db-name='magento' \
     --db-user='magento' \
-    --db-password='qwerty' \
+    --db-password='magento' \
     --session-save='redis' \
     --session-save-redis-host='127.0.0.1' \
     --session-save-redis-db='0' \
@@ -18,8 +18,8 @@ magerun setup:install \
     --page-cache='redis' \
     --page-cache-redis-server='127.0.0.1' \
     --page-cache-redis-db='2' \
-    --admin-firstname='Admin' \
-    --admin-lastname='Magento' \
+    --admin-firstname='Magento' \
+    --admin-lastname='Admin' \
     --admin-email='admin@example.com' \
     --admin-user='admin' \
     --admin-password='Qwerty123'

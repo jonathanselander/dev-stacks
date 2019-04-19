@@ -8,7 +8,7 @@ magerun setup:install \
     --db-host='127.0.0.1' \
     --db-name='magento' \
     --db-user='magento' \
-    --db-password='qwerty' \
+    --db-password='magento' \
     --session-save='redis' \
     --session-save-redis-host='127.0.0.1' \
     --session-save-redis-db='0' \
@@ -21,9 +21,9 @@ magerun setup:install \
     --amqp-host='127.0.0.1' \
     --amqp-virtualhost='magento' \
     --amqp-user='magento' \
-    --amqp-password='qwerty' \
-    --admin-firstname='Admin' \
-    --admin-lastname='Magento' \
+    --amqp-password='magento' \
+    --admin-firstname='Magento' \
+    --admin-lastname='Admin' \
     --admin-email='admin@example.com' \
     --admin-user='admin' \
     --admin-password='Qwerty123'
