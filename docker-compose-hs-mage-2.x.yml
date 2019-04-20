@@ -8,13 +8,15 @@ services:
       - ./.docker/etc-mage-2.x/varnish.vcl:/etc/varnish/default.vcl:ro
       - varnish_data:/var/lib/varnish
     network_mode: "host"
+    hostname: mage-varnish
   nginx:
     image: nginx:stable
     volumes:
       - ./.docker/etc-mage-2.x/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ${ROOT_DIR:-.}/pub:/var/www/magento/pub:ro
+      - ${ROOT_DIR:-.}:/var/www/magento:ro
       - ${MEDIA_DIR:-./pub/media}:/var/www/magento/pub/media:ro
     network_mode: "host"
+    hostname: mage-nginx
   php:
     build:
       context: ./.docker/img-php-mage
@@ -28,6 +30,7 @@ services:
       PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-serverName=magento}
       MAGE_MODE: developer
     network_mode: "host"
+    hostname: mage-php
   mysql:
     image: mysql:5.7
     environment:
@@ -38,11 +41,13 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     network_mode: "host"
+    hostname: mage-mysql
   redis:
     image: redis:3.2
     volumes:
       - redis_data:/data
     network_mode: "host"
+    hostname: mage-redis
   elasticsearch:
     build:
       context: ./.docker/img-elasticsearch
@@ -54,9 +59,11 @@ services:
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     network_mode: "host"
+    hostname: mage-elasticsearch
   mailhog:
     image: mailhog/mailhog
     network_mode: "host"
+    hostname: mage-mailhog
 volumes:
   varnish_data:
   mysql_data:
