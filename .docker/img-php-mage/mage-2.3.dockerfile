@@ -12,9 +12,9 @@ RUN apt-get update && \
         libxslt1-dev && \
     apt-get clean
 
-RUN docker-php-ext-install bcmath intl opcache pdo_mysql soap xsl zip && \
+RUN docker-php-ext-install -j$(nproc) bcmath intl opcache pdo_mysql soap xsl zip && \
     docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-freetype-dir=/usr/include/ && \
-    docker-php-ext-install gd && \
+    docker-php-ext-install -j$(nproc) gd && \
     pecl install mcrypt-snapshot && \
     pecl install xdebug && \
     docker-php-ext-enable mcrypt xdebug 
