@@ -38,11 +38,11 @@ RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun2.phar &
 ARG USER_ID
 
 RUN test -n "${USER_ID:?}" && \
-    mkdir -p /var/www/magento && \
-    chmod -R 750 /var/www && \
+    mkdir -p /srv/magento && \
+    chmod -R 750 /srv/magento && \
     groupadd --gid $USER_ID magento && \
-    useradd --home /var/www --uid $USER_ID --gid $USER_ID magento && \
-    chown -R magento:magento /var/www
+    useradd --home /srv/magento --uid $USER_ID --gid $USER_ID magento && \
+    chown -R magento:magento /srv/magento
 
-WORKDIR /var/www/magento
+WORKDIR /srv/magento
 EXPOSE 9000
