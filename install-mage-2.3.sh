@@ -40,6 +40,8 @@ magerun config:set --lock-config system/full_page_cache/varnish/access_list '127
 magerun config:set --lock-config system/full_page_cache/varnish/backend_host '127.0.0.1'
 magerun config:set --lock-config system/full_page_cache/varnish/backend_port '8080'
 
+magerun setup:config:set --http-cache-hosts=127.0.0.1:80
+
 magerun config:set general/locale/timezone UTC
 magerun config:set general/locale/code en_US
 
