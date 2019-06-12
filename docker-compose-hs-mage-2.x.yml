@@ -20,7 +20,7 @@ services:
   php:
     build:
       context: ./.docker/img-php-mage
-      dockerfile: mage-2.2.dockerfile
+      dockerfile: php-7.1.dockerfile
       args:
         USER_ID: ${USER_ID:-1000}
     volumes:
