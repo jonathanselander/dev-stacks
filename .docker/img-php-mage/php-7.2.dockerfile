@@ -7,6 +7,7 @@ RUN apt-get update && \
         libicu-dev \
         libjpeg-dev \
         libmcrypt-dev \
+        libmagickwand-dev \
         libpng-dev \
         libxml2-dev \
         libxslt1-dev && \
@@ -15,9 +16,10 @@ RUN apt-get update && \
 RUN docker-php-ext-install -j$(nproc) bcmath intl opcache pdo_mysql soap xsl zip && \
     docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-freetype-dir=/usr/include/ && \
     docker-php-ext-install -j$(nproc) gd && \
+    pecl install imagick && \
     pecl install mcrypt-snapshot && \
     pecl install xdebug && \
-    docker-php-ext-enable mcrypt xdebug 
+    docker-php-ext-enable imagick mcrypt xdebug
 
 COPY www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY php.ini /usr/local/etc/php/php.ini
