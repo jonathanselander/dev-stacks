@@ -52,13 +52,17 @@ RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun2.phar &
 ARG USER_ID
 
 RUN test -n "${USER_ID:?}" && \
-    mkdir -p /run/php && \
     mkdir -p /srv/magento && \
     chmod -R 755 /srv/magento && \
     groupadd --gid $USER_ID magento && \
     useradd --home /srv/magento --uid $USER_ID --gid $USER_ID magento && \
     chown -R magento:magento /srv/magento
 
+RUN mkdir -p /run/php && \
+    chmod -R 755 /run/php && \
+    chown -R magento:magento /run/php
+
+USER magento:magento
 WORKDIR /srv/magento
 
 ENTRYPOINT ["php-fpm7.2", "-F"]
