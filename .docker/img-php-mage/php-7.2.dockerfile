@@ -1,32 +1,44 @@
-FROM php:7.2-fpm
+FROM debian:9-slim
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        ssmtp \
-        libfreetype6-dev \
-        libicu-dev \
-        libjpeg-dev \
-        libmcrypt-dev \
-        libmagickwand-dev \
-        libpng-dev \
-        libxml2-dev \
-        libxslt1-dev && \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        lsb-release && \
+    curl -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
+    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        php7.2-common \
+        php7.2-cli \
+        php7.2-curl \
+        php7.2-fpm \
+        php7.2-bcmath \
+        php7.2-gd \
+        php7.2-imagick \
+        php7.2-intl \
+        php7.2-mbstring \
+        php7.2-mysql \
+        php7.2-opcache \
+        php7.2-soap \
+        php7.2-xdebug \
+        php7.2-xsl \
+        php7.2-zip
+
+RUN apt-get install -y --no-install-recommends \
+        ssmtp && \
     apt-get clean
 
-RUN docker-php-ext-install -j$(nproc) bcmath intl opcache pdo_mysql soap xsl zip && \
-    docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ --with-freetype-dir=/usr/include/ && \
-    docker-php-ext-install -j$(nproc) gd && \
-    pecl install imagick && \
-    pecl install mcrypt-snapshot && \
-    pecl install xdebug && \
-    docker-php-ext-enable imagick mcrypt xdebug
-
-COPY www.conf /usr/local/etc/php-fpm.d/www.conf
-COPY php.ini /usr/local/etc/php/php.ini
+COPY www.conf /etc/php/7.2/fpm/pool.d/www.conf
+COPY php.ini /etc/php/7.2/fpm/php.ini
+COPY php.ini /etc/php/7.2/cli/php.ini
 COPY ssmtp.conf /etc/ssmtp/ssmtp.conf
 
-RUN chmod 644 /usr/local/etc/php-fpm.d/www.conf && \
-    chmod 644 /usr/local/etc/php/php.ini && \
+RUN chmod 644 /etc/php/7.2/fpm/pool.d/www.conf && \
+    chmod 644 /etc/php/7.2/fpm/php.ini && \
+    chmod 644 /etc/php/7.2/cli/php.ini && \
     chmod 644 /etc/ssmtp/ssmtp.conf
 
 RUN curl https://getcomposer.org/installer | \
@@ -40,6 +52,7 @@ RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun2.phar &
 ARG USER_ID
 
 RUN test -n "${USER_ID:?}" && \
+    mkdir -p /run/php && \
     mkdir -p /srv/magento && \
     chmod -R 755 /srv/magento && \
     groupadd --gid $USER_ID magento && \
@@ -47,4 +60,6 @@ RUN test -n "${USER_ID:?}" && \
     chown -R magento:magento /srv/magento
 
 WORKDIR /srv/magento
+
+ENTRYPOINT ["php-fpm7.2", "-F"]
 EXPOSE 9000
