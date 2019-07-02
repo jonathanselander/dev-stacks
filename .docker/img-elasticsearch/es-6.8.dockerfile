@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:5.6.14
+FROM docker.elastic.co/elasticsearch/elasticsearch:6.8.1
 
 RUN ./bin/elasticsearch-plugin install --batch analysis-phonetic
 RUN ./bin/elasticsearch-plugin install --batch analysis-icu
