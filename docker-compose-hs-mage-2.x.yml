@@ -51,10 +51,11 @@ services:
   elasticsearch:
     build:
       context: ./.docker/img-elasticsearch
-      dockerfile: es-6.8.dockerfile
+      dockerfile: es-5.6.dockerfile
     environment:
       discovery.type: single-node
       cluster.name: magento
+      xpack.security.enabled: 0
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     network_mode: "host"
