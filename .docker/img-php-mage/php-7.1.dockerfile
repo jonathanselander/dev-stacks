@@ -13,8 +13,8 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         php7.1-common \
         php7.1-cli \
-        php7.1-curl \
         php7.1-fpm \
+        php7.1-curl \
         php7.1-bcmath \
         php7.1-gd \
         php7.1-imagick \
@@ -49,6 +49,9 @@ RUN curl https://getcomposer.org/installer | \
 
 RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun2.phar && \
     chmod 755 /usr/local/bin/magerun
+
+RUN curl -o /usr/local/bin/magerun1 https://files.magerun.net/n98-magerun.phar && \
+    chmod 755 /usr/local/bin/magerun1
 
 ARG USER_ID
 

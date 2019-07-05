@@ -11,34 +11,35 @@ RUN apt-get update && \
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        php7.2-common \
-        php7.2-cli \
-        php7.2-fpm \
-        php7.2-curl \
-        php7.2-bcmath \
-        php7.2-gd \
-        php7.2-imagick \
-        php7.2-intl \
-        php7.2-mbstring \
-        php7.2-mysql \
-        php7.2-opcache \
-        php7.2-soap \
-        php7.2-xdebug \
-        php7.2-xsl \
-        php7.2-zip
+        php7.0-common \
+        php7.0-cli \
+        php7.0-fpm \
+        php7.0-curl \
+        php7.0-bcmath \
+        php7.0-gd \
+        php7.0-imagick \
+        php7.0-intl \
+        php7.0-mbstring \
+        php7.0-mcrypt \
+        php7.0-mysql \
+        php7.0-opcache \
+        php7.0-soap \
+        php7.0-xdebug \
+        php7.0-xsl \
+        php7.0-zip
 
 RUN apt-get install -y --no-install-recommends \
         ssmtp && \
     apt-get clean
 
-COPY www.conf /etc/php/7.2/fpm/pool.d/www.conf
-COPY php.ini /etc/php/7.2/fpm/php.ini
-COPY php.ini /etc/php/7.2/cli/php.ini
+COPY www.conf /etc/php/7.0/fpm/pool.d/www.conf
+COPY php.ini /etc/php/7.0/fpm/php.ini
+COPY php.ini /etc/php/7.0/cli/php.ini
 COPY ssmtp.conf /etc/ssmtp/ssmtp.conf
 
-RUN chmod 644 /etc/php/7.2/fpm/pool.d/www.conf && \
-    chmod 644 /etc/php/7.2/fpm/php.ini && \
-    chmod 644 /etc/php/7.2/cli/php.ini && \
+RUN chmod 644 /etc/php/7.0/fpm/pool.d/www.conf && \
+    chmod 644 /etc/php/7.0/fpm/php.ini && \
+    chmod 644 /etc/php/7.0/cli/php.ini && \
     chmod 644 /etc/ssmtp/ssmtp.conf
 
 RUN curl https://getcomposer.org/installer | \
@@ -68,5 +69,5 @@ RUN mkdir -p /run/php && \
 USER magento:magento
 WORKDIR /srv/magento
 
-ENTRYPOINT ["php-fpm7.2", "-F"]
+ENTRYPOINT ["php-fpm7.0", "-F"]
 EXPOSE 9000
