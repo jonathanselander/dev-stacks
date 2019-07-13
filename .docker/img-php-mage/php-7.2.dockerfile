@@ -28,8 +28,9 @@ RUN apt-get update && \
         php7.2-zip
 
 RUN apt-get install -y --no-install-recommends \
-        ssmtp && \
-    apt-get clean
+        git \
+        unzip \
+        ssmtp
 
 COPY www.conf /etc/php/7.2/fpm/pool.d/www.conf
 COPY php.ini /etc/php/7.2/fpm/php.ini
@@ -55,13 +56,15 @@ RUN curl -o /usr/local/bin/magerun1 https://files.magerun.net/n98-magerun.phar &
 ARG USER_ID
 
 RUN test -n "${USER_ID:?}" && \
+    mkdir -p /home/magento && \
+    chmod -R 755 /home/magento && \
+    groupadd --gid $USER_ID magento && \
+    useradd --home /home/magento --uid $USER_ID --gid $USER_ID magento && \
+    chown -R magento:magento /home/magento && \
     mkdir -p /srv/magento && \
     chmod -R 755 /srv/magento && \
-    groupadd --gid $USER_ID magento && \
-    useradd --home /srv/magento --uid $USER_ID --gid $USER_ID magento && \
-    chown -R magento:magento /srv/magento
-
-RUN mkdir -p /run/php && \
+    chown -R magento:magento /srv/magento && \
+    mkdir -p /run/php && \
     chmod -R 755 /run/php && \
     chown -R magento:magento /run/php
 
