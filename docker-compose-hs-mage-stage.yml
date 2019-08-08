@@ -20,8 +20,9 @@ services:
   php:
     build:
       context: ./.docker/img-php-mage
-      dockerfile: php-7.1.dockerfile
+      dockerfile: php.dockerfile
       args:
+        PHP_VERSION: 7.2
         USER_ID: ${USER_ID:-1000}
     volumes:
       - ${COMPOSER_HOME:-~/.config/composer}:/home/magento/.composer
