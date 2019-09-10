@@ -33,8 +33,9 @@ RUN apt-get update && \
 
 RUN apt-get install -y --no-install-recommends \
         git \
-        unzip \
-        ssmtp
+        patch \
+        ssmtp \
+        unzip
 
 COPY www.conf /etc/php/$PHP_VERSION/fpm/pool.d/www.conf
 COPY php.ini /etc/php/$PHP_VERSION/fpm/php.ini
