@@ -5,24 +5,24 @@ services:
       context: ./.docker/img-varnish
       dockerfile: varnish.dockerfile
     volumes:
-      - ./.docker/etc-mage/varnish.vcl:/etc/varnish/default.vcl:ro
+      - ./.docker/etc-magento/varnish.vcl:/etc/varnish/default.vcl:ro
       - varnish_data:/var/lib/varnish
     network_mode: "host"
     hostname: mage-varnish
   nginx:
     image: nginx:stable
     volumes:
-      - ./.docker/etc-mage/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./.docker/etc-magento/nginx.conf:/etc/nginx/nginx.conf:ro
       - ${MAGENTO_ROOT_DIR:-.}:/srv/magento:ro
       - ${MAGENTO_MEDIA_DIR:-./pub/media}:/srv/magento/pub/media:ro
     network_mode: "host"
     hostname: mage-nginx
   php:
     build:
-      context: ./.docker/img-php-mage
+      context: ./.docker/img-php-magento
       dockerfile: php.dockerfile
       args:
-        PHP_VERSION: 7.2
+        PHP_VERSION: ${PHP_VERSION:-7.2}
         USER_ID: ${USER_ID:-1000}
     volumes:
       - ${COMPOSER_HOME:-~/.config/composer}:/home/magento/.composer
