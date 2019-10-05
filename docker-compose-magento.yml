@@ -24,6 +24,7 @@ services:
       args:
         PHP_VERSION: ${PHP_VERSION:-7.2}
         USER_ID: ${USER_ID:-1000}
+        USER_NAME: ${USER_NAME:-magento}
     volumes:
       - ${COMPOSER_HOME:-~/.config/composer}:/home/magento/.composer
       - ${COMPOSER_CACHE_DIR:-~/.cache/composer}:/home/magento/.composer/cache
@@ -52,7 +53,9 @@ services:
     network_mode: "host"
     hostname: mage-redis
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
+    build:
+      context: ./.docker/img-elasticsearch
+      dockerfile: elasticsearch-6.8.dockerfile
     environment:
       discovery.type: single-node
       cluster.name: magento

@@ -1,4 +1,4 @@
-FROM debian:9-slim
+FROM debian:10-slim
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -34,18 +34,16 @@ RUN apt-get update && \
 RUN apt-get install -y --no-install-recommends \
         git \
         patch \
-        ssmtp \
+        msmtp-mta \
         unzip
 
 COPY www.conf /etc/php/$PHP_VERSION/fpm/pool.d/www.conf
 COPY php.ini /etc/php/$PHP_VERSION/fpm/php.ini
 COPY php.ini /etc/php/$PHP_VERSION/cli/php.ini
-COPY ssmtp.conf /etc/ssmtp/ssmtp.conf
 
 RUN chmod 644 /etc/php/$PHP_VERSION/fpm/pool.d/www.conf && \
     chmod 644 /etc/php/$PHP_VERSION/fpm/php.ini && \
-    chmod 644 /etc/php/$PHP_VERSION/cli/php.ini && \
-    chmod 644 /etc/ssmtp/ssmtp.conf
+    chmod 644 /etc/php/$PHP_VERSION/cli/php.ini
 
 RUN curl https://getcomposer.org/installer | \
     php -- \
@@ -55,28 +53,27 @@ RUN curl https://getcomposer.org/installer | \
 RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun2.phar && \
     chmod 755 /usr/local/bin/magerun
 
-RUN curl -o /usr/local/bin/magerun1 https://files.magerun.net/n98-magerun.phar && \
-    chmod 755 /usr/local/bin/magerun1
-
 ARG USER_ID
+ARG USER_NAME
 
-RUN test -n "${USER_ID:?}" && \
-    mkdir -p /home/magento && \
-    chmod -R 755 /home/magento && \
-    groupadd --gid $USER_ID magento && \
-    useradd --home /home/magento --uid $USER_ID --gid $USER_ID magento && \
-    chown -R magento:magento /home/magento && \
-    mkdir -p /srv/magento && \
-    chmod -R 755 /srv/magento && \
-    chown -R magento:magento /srv/magento
+RUN test -n "${USER_ID:?}" && test -n "${USER_NAME:?}"
+
+RUN mkdir -p /home/$USER_NAME && \
+    chmod -R 755 /home/$USER_NAME && \
+    groupadd --gid $USER_ID $USER_NAME && \
+    useradd --home /home/$USER_NAME --uid $USER_ID --gid $USER_ID $USER_NAME && \
+    chown -R $USER_NAME:$USER_NAME /home/$USER_NAME && \
+    mkdir -p /srv/$USER_NAME && \
+    chmod -R 755 /srv/$USER_NAME && \
+    chown -R $USER_NAME:$USER_NAME /srv/$USER_NAME
 
 RUN mkdir -p /run/php && \
     chmod -R 755 /run/php && \
-    chown -R magento:magento /run/php && \
+    chown -R $USER_NAME:$USER_NAME /run/php && \
     ln -s /usr/sbin/php-fpm$PHP_VERSION /usr/sbin/php-fpm
 
-USER magento:magento
-WORKDIR /srv/magento
+USER $USER_NAME:$USER_NAME
+WORKDIR /srv/$USER_NAME
 
 ENTRYPOINT ["php-fpm", "-F"]
 EXPOSE 9000
