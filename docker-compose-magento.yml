@@ -19,8 +19,8 @@ services:
     hostname: mage-nginx
   php:
     build:
-      context: ./.docker/img-php-magento
-      dockerfile: php.dockerfile
+      context: ./.docker/img-php
+      dockerfile: magento.dockerfile
       args:
         PHP_VERSION: ${PHP_VERSION:-7.2}
         USER_ID: ${USER_ID:-1000}
