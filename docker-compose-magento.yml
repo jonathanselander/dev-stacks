@@ -30,6 +30,7 @@ services:
       - ${COMPOSER_CACHE_DIR:-~/.cache/composer}:/home/magento/.composer/cache
       - ${MAGENTO_ROOT_DIR:-.}:/srv/magento
       - ${MAGENTO_MEDIA_DIR:-./pub/media}:/srv/magento/pub/media
+      - ${XDEBUG_DIR:-./var/xdebug}:/var/xdebug
     environment:
       PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-serverName=magento}
       MAGE_MODE: developer

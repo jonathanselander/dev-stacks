@@ -67,7 +67,10 @@ RUN mkdir -p /home/$USER_NAME && \
     chmod -R 755 /srv/$USER_NAME && \
     chown -R $USER_NAME:$USER_NAME /srv/$USER_NAME
 
-RUN mkdir -p /run/php && \
+RUN mkdir -p /var/xdebug && \
+    chmod -R 755 /var/xdebug && \
+    chown -R $USER_NAME:$USER_NAME /var/xdebug && \
+    mkdir -p /run/php && \
     chmod -R 755 /run/php && \
     chown -R $USER_NAME:$USER_NAME /run/php && \
     ln -s /usr/sbin/php-fpm$PHP_VERSION /usr/sbin/php-fpm
