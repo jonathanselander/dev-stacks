@@ -6,20 +6,21 @@ import std;
 # For SSL offloading, pass the following header in your proxy server or load balancer: 'X-Forwarded-Proto: https'
 
 backend default {
-    .host = "127.0.0.1";
-    .port = "8080";
+    .host = "nginx";
+    .port = "80";
     .first_byte_timeout = 600s;
-    .probe = {
-        .url = "/health_check.php";
-        .timeout = 2s;
-        .interval = 5s;
-        .window = 10;
-        .threshold = 5;
-   }
+
+    #.probe = {
+    #    .url = "/health_check.php";
+    #    .timeout = 2s;
+    #    .interval = 5s;
+    #    .window = 10;
+    #    .threshold = 5;
+    #}
 }
 
 acl purge {
-    "127.0.0.1";
+    "php";
 }
 
 sub vcl_recv {

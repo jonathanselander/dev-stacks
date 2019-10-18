@@ -23,7 +23,7 @@ RUN apt-get update && \
         php$PHP_VERSION-imagick \
         php$PHP_VERSION-intl \
         php$PHP_VERSION-mbstring \
-        $(dpkg --compare-versions "$PHP_VERSION" lt 7.2 && echo php$PHP_VERSION-mcrypt) \
+        `dpkg --compare-versions $PHP_VERSION lt 7.2 && echo php$PHP_VERSION-mcrypt` \
         php$PHP_VERSION-mysql \
         php$PHP_VERSION-opcache \
         php$PHP_VERSION-soap \
