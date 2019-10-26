@@ -30,7 +30,6 @@ services:
       - ${COMPOSER_CACHE_DIR:-~/.cache/composer}:/home/magento/.composer/cache
       - ${MAGENTO_ROOT_DIR:-.}:/srv/magento
       - ${MAGENTO_MEDIA_DIR:-./pub/media}:/srv/magento/pub/media
-      - ${XDEBUG_DIR:-./var/xdebug}:/var/xdebug
     environment:
       PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-serverName=magento}
       MAGE_MODE: developer
@@ -43,6 +42,7 @@ services:
       MYSQL_USER: magento
       MYSQL_PASSWORD: magento
     volumes:
+      - ./.docker/etc-magento/mysql.cnf:/etc/mysql/conf.d/magento.cnf:ro
       - mysql_data:/var/lib/mysql
     ports:
       - 3306:3306

@@ -54,29 +54,27 @@ RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun2.phar &
     chmod 755 /usr/local/bin/magerun
 
 ARG USER_ID
-ARG USER_NAME
+RUN test -n "${USER_ID:?}"
 
-RUN test -n "${USER_ID:?}" && test -n "${USER_NAME:?}"
-
-RUN mkdir -p /home/$USER_NAME && \
-    chmod -R 755 /home/$USER_NAME && \
-    groupadd --gid $USER_ID $USER_NAME && \
-    useradd --home /home/$USER_NAME --uid $USER_ID --gid $USER_ID $USER_NAME && \
-    chown -R $USER_NAME:$USER_NAME /home/$USER_NAME && \
-    mkdir -p /srv/$USER_NAME && \
-    chmod -R 755 /srv/$USER_NAME && \
-    chown -R $USER_NAME:$USER_NAME /srv/$USER_NAME
+RUN mkdir -p /home/magento && \
+    chmod -R 755 /home/magento && \
+    groupadd --gid $USER_ID magento && \
+    useradd --home /home/magento --uid $USER_ID --gid $USER_ID magento && \
+    chown -R magento:magento /home/magento && \
+    mkdir -p /srv/magento && \
+    chmod -R 755 /srv/magento && \
+    chown -R magento:magento /srv/magento
 
 RUN mkdir -p /var/xdebug && \
     chmod -R 755 /var/xdebug && \
-    chown -R $USER_NAME:$USER_NAME /var/xdebug && \
+    chown -R magento:magento /var/xdebug && \
     mkdir -p /run/php && \
     chmod -R 755 /run/php && \
-    chown -R $USER_NAME:$USER_NAME /run/php && \
+    chown -R magento:magento /run/php && \
     ln -s /usr/sbin/php-fpm$PHP_VERSION /usr/sbin/php-fpm
 
-USER $USER_NAME:$USER_NAME
-WORKDIR /srv/$USER_NAME
+USER magento:magento
+WORKDIR /srv/magento
 
 ENTRYPOINT ["php-fpm", "-F"]
 EXPOSE 9000
