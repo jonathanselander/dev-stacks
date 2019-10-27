@@ -30,8 +30,12 @@ docker-compose exec php magerun maintenance:enable
 docker-compose exec php magerun deploy:mode:set developer
 
 docker-compose exec php magerun config:set --lock-env web/unsecure/base_url 'http://magento.localhost/'
-docker-compose exec php magerun config:set --lock-env web/seo/use_rewrites 1
+docker-compose exec php magerun config:set --lock-env web/secure/base_url 'http://magento.localhost/'
+docker-compose exec php magerun config:set --lock-env web/secure/use_in_frontend 0
+docker-compose exec php magerun config:set --lock-env web/secure/use_in_adminhtml 0
+docker-compose exec php magerun config:set --lock-env web/url/redirect_to_base 1
 docker-compose exec php magerun config:set --lock-env web/url/use_store 1
+docker-compose exec php magerun config:set --lock-env web/seo/use_rewrites 1
 
 docker-compose exec php magerun config:set --lock-env catalog/search/engine 'elasticsearch6'
 docker-compose exec php magerun config:set --lock-env catalog/search/elasticsearch6_server_hostname 'elasticsearch'

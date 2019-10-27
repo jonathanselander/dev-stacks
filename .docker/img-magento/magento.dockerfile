@@ -65,10 +65,7 @@ RUN mkdir -p /home/magento && \
     chmod -R 755 /srv/magento && \
     chown -R magento:magento /srv/magento
 
-RUN mkdir -p /var/xdebug && \
-    chmod -R 755 /var/xdebug && \
-    chown -R magento:magento /var/xdebug && \
-    mkdir -p /run/php && \
+RUN mkdir -p /run/php && \
     chmod -R 755 /run/php && \
     chown -R magento:magento /run/php && \
     ln -s /usr/sbin/php-fpm$PHP_VERSION /usr/sbin/php-fpm

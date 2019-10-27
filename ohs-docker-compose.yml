@@ -5,7 +5,7 @@ services:
       context: ./.docker/img-varnish
       dockerfile: varnish.dockerfile
     volumes:
-      - ./.docker/etc-magento/varnish.vcl:/etc/varnish/default.vcl:ro
+      - ./.docker/etc-ohs-magento/varnish.vcl:/etc/varnish/default.vcl:ro
       - varnish_data:/var/lib/varnish
     ports:
       - 80:80
@@ -13,25 +13,24 @@ services:
   nginx:
     image: nginx:stable
     volumes:
-      - ./.docker/etc-magento/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./.docker/etc-ohs-magento/nginx.conf:/etc/nginx/nginx.conf:ro
       - ${MAGENTO_ROOT_DIR:-.}:/srv/magento:ro
-      - ${MAGENTO_MEDIA_DIR:-./pub/media}:/srv/magento/pub/media:ro
+      - ${MAGENTO_MEDIA_DIR:-./www/media}:/srv/magento/www/media:ro
     hostname: mage-nginx
   php:
     build:
       context: ./.docker/img-magento
       dockerfile: magento.dockerfile
       args:
-        PHP_VERSION: ${PHP_VERSION:-7.3}
+        PHP_VERSION: ${PHP_VERSION:-7.0}
         USER_ID: ${USER_ID:-1000}
     volumes:
       - ${COMPOSER_HOME:-~/.config/composer}:/home/magento/.composer
       - ${COMPOSER_CACHE_DIR:-~/.cache/composer}:/home/magento/.composer/cache
       - ${MAGENTO_ROOT_DIR:-.}:/srv/magento
-      - ${MAGENTO_MEDIA_DIR:-./pub/media}:/srv/magento/pub/media
+      - ${MAGENTO_MEDIA_DIR:-./www/media}:/srv/magento/www/media
     environment:
       PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-serverName=magento}
-      MAGE_MODE: developer
     hostname: mage-php
   mysql:
     image: mysql:5.7
@@ -41,7 +40,7 @@ services:
       MYSQL_USER: magento
       MYSQL_PASSWORD: magento
     volumes:
-      - ./.docker/etc-magento/mysqld.cnf:/etc/mysql/conf.d/magento.cnf:ro
+      - ./.docker/etc-ohs-magento/mysqld.cnf:/etc/mysql/conf.d/magento.cnf:ro
       - mysql_data:/var/lib/mysql
     ports:
       - 3306:3306
@@ -56,26 +55,16 @@ services:
   elasticsearch:
     build:
       context: ./.docker/img-elasticsearch
-      dockerfile: elasticsearch-6.8.dockerfile
+      dockerfile: elasticsearch-5.6.dockerfile
     environment:
       discovery.type: single-node
       cluster.name: magento
+      xpack.security.enabled: 0
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
     hostname: mage-elasticsearch
-  rabbitmq:
-    image: rabbitmq:3.7-management
-    environment:
-      RABBITMQ_DEFAULT_VHOST: magento
-      RABBITMQ_DEFAULT_USER: magento
-      RABBITMQ_DEFAULT_PASS: magento
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-    ports:
-      - 15672:15672
-    hostname: mage-rabbitmq
   mailhog:
     image: mailhog/mailhog
     ports:
@@ -86,4 +75,3 @@ volumes:
   mysql_data:
   redis_data:
   elasticsearch_data:
-  rabbitmq_data:
