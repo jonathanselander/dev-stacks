@@ -5,7 +5,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.hs.entrypoints=http"
       - "traefik.http.routers.hs.rule=Host(`happysocks.localhost`)"
-  php:
+  magento:
     build:
       args:
         PHP_VERSION: ${PHP_VERSION:-7.2}

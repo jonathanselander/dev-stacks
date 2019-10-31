@@ -9,7 +9,7 @@ services:
       - 80:80
       - 3306:3306
       - 6379:6379
-    hostname: mage-traefik
+    hostname: magento-traefik
   varnish:
     build:
       context: ./.docker/img-varnish
@@ -21,15 +21,15 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.magento.entrypoints=http"
       - "traefik.http.routers.magento.rule=Host(`magento.localhost`)"
-    hostname: mage-varnish
+    hostname: magento-varnish
   nginx:
     image: nginx:stable
     volumes:
       - ./.docker/etc-magento/nginx.conf:/etc/nginx/nginx.conf:ro
       - ${MAGENTO_ROOT_DIR:-.}:/srv/magento:ro
       - ${MAGENTO_MEDIA_DIR:-./pub/media}:/srv/magento/pub/media:ro
-    hostname: mage-nginx
-  php:
+    hostname: magento-nginx
+  magento:
     build:
       context: ./.docker/img-magento
       dockerfile: magento.dockerfile
@@ -44,7 +44,7 @@ services:
     environment:
       PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-serverName=magento}
       MAGE_MODE: developer
-    hostname: mage-php
+    hostname: magento
   mysql:
     image: mysql:5.7
     environment:
@@ -59,7 +59,7 @@ services:
       - "traefik.enable=true"
       - "traefik.tcp.routers.mysql.entrypoints=mysql"
       - "traefik.tcp.routers.mysql.rule=HostSNI(`*`)"
-    hostname: mage-mysql
+    hostname: magento-mysql
   redis:
     image: redis:5.0
     volumes:
@@ -68,7 +68,7 @@ services:
       - "traefik.enable=true"
       - "traefik.tcp.routers.redis.entrypoints=redis"
       - "traefik.tcp.routers.redis.rule=HostSNI(`*`)"
-    hostname: mage-redis
+    hostname: magento-redis
   elasticsearch:
     build:
       context: ./.docker/img-elasticsearch
@@ -78,7 +78,7 @@ services:
       cluster.name: magento
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
-    hostname: mage-elasticsearch
+    hostname: magento-elasticsearch
   rabbitmq:
     image: rabbitmq:3.7-management
     environment:
@@ -92,7 +92,7 @@ services:
       - "traefik.http.routers.rabbitmq.entrypoints=http"
       - "traefik.http.routers.rabbitmq.rule=Host(`rabbitmq.localhost`)"
       - "traefik.http.services.rabbitmq.loadbalancer.server.port=15672"
-    hostname: mage-rabbitmq
+    hostname: magento-rabbitmq
   mailhog:
     image: mailhog/mailhog
     labels:
@@ -100,7 +100,7 @@ services:
       - "traefik.http.routers.mailhog.rule=Host(`mailhog.localhost`)"
       - "traefik.http.routers.mailhog.entrypoints=http"
       - "traefik.http.services.mailhog.loadbalancer.server.port=8025"
-    hostname: mage-mailhog
+    hostname: magento-mailhog
 volumes:
   varnish-data:
   mysql-data:

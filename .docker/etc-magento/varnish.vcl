@@ -20,7 +20,7 @@ backend default {
 }
 
 acl purge {
-    "php";
+    "magento";
 }
 
 sub vcl_recv {
