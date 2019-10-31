@@ -9,11 +9,6 @@ services:
       - 80:80
       - 3306:3306
       - 6379:6379
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.entrypoints=http"
-      - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.http.routers.traefik.rule=Host(`localhost`)"
     hostname: mage-traefik
   varnish:
     build:
@@ -21,7 +16,7 @@ services:
       dockerfile: varnish.dockerfile
     volumes:
       - ./.docker/etc-magento/varnish.vcl:/etc/varnish/default.vcl:ro
-      - varnish_data:/var/lib/varnish
+      - varnish-data:/var/lib/varnish
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.magento.entrypoints=http"
@@ -59,7 +54,7 @@ services:
       MYSQL_PASSWORD: magento
     volumes:
       - ./.docker/etc-magento/mysqld.cnf:/etc/mysql/conf.d/magento.cnf:ro
-      - mysql_data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     labels:
       - "traefik.enable=true"
       - "traefik.tcp.routers.mysql.entrypoints=mysql"
@@ -68,7 +63,7 @@ services:
   redis:
     image: redis:5.0
     volumes:
-      - redis_data:/data
+      - redis-data:/data
     labels:
       - "traefik.enable=true"
       - "traefik.tcp.routers.redis.entrypoints=redis"
@@ -82,7 +77,7 @@ services:
       discovery.type: single-node
       cluster.name: magento
     volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
+      - elasticsearch-data:/usr/share/elasticsearch/data
     hostname: mage-elasticsearch
   rabbitmq:
     image: rabbitmq:3.7-management
@@ -91,7 +86,7 @@ services:
       RABBITMQ_DEFAULT_USER: magento
       RABBITMQ_DEFAULT_PASS: magento
     volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
+      - rabbitmq-data:/var/lib/rabbitmq
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rabbitmq.entrypoints=http"
@@ -107,8 +102,8 @@ services:
       - "traefik.http.services.mailhog.loadbalancer.server.port=8025"
     hostname: mage-mailhog
 volumes:
-  varnish_data:
-  mysql_data:
-  redis_data:
-  elasticsearch_data:
-  rabbitmq_data:
+  varnish-data:
+  mysql-data:
+  redis-data:
+  elasticsearch-data:
+  rabbitmq-data:
