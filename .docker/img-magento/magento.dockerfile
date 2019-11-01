@@ -5,14 +5,21 @@ RUN apt-get update && \
         apt-transport-https \
         ca-certificates \
         curl \
-        lsb-release && \
-    curl -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
-    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+        g++ \
+        gcc \
+        git \
+        make \
+        msmtp-mta \
+        lsb-release \
+        patch \
+        unzip
 
 ARG PHP_VERSION
 RUN test -n "${PHP_VERSION:?}"
 
-RUN apt-get update && \
+RUN curl -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
+    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list && \
+    apt-get update && \
     apt-get install -y --no-install-recommends \
         php$PHP_VERSION-common \
         php$PHP_VERSION-cli \
@@ -31,11 +38,16 @@ RUN apt-get update && \
         php$PHP_VERSION-xsl \
         php$PHP_VERSION-zip
 
-RUN apt-get install -y --no-install-recommends \
-        git \
-        patch \
-        msmtp-mta \
-        unzip
+ARG NODE_VERSION
+RUN test -n "${NODE_VERSION:?}"
+
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION:?}.x | bash - && \
+    curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        nodejs \
+        yarn
 
 COPY www.conf /etc/php/$PHP_VERSION/fpm/pool.d/www.conf
 COPY php.ini /etc/php/$PHP_VERSION/fpm/php.ini

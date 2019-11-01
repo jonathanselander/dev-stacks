@@ -35,6 +35,7 @@ services:
       dockerfile: magento.dockerfile
       args:
         PHP_VERSION: ${PHP_VERSION:-7.3}
+        NODE_VERSION: ${NODE_VERSION:-12}
         USER_ID: ${USER_ID:-1000}
     volumes:
       - ${COMPOSER_HOME:-~/.config/composer}:/home/magento/.composer
