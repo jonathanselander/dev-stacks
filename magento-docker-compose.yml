@@ -2,25 +2,30 @@ version: "3.7"
 services:
   traefik:
     image: traefik:2.0
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./.docker/etc-magento/traefik.yml:/etc/traefik/traefik.yml:ro
+    environment:
+      TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT: "false"
+      TRAEFIK_ENTRYPOINTS_HTTP_ADDRESS: "0.0.0.0:80"
+      TRAEFIK_ENTRYPOINTS_MYSQL_ADDRESS: "0.0.0.0:3306"
+      TRAEFIK_ENTRYPOINTS_REDIS_ADDRESS: "0.0.0.0:6379"
+      TRAEFIK_ACCESSLOG: "true"
     ports:
       - 80:80
       - 3306:3306
       - 6379:6379
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     hostname: magento-traefik
   varnish:
     build:
       context: ./.docker/img-varnish
       dockerfile: varnish.dockerfile
-    volumes:
-      - ./.docker/etc-magento/varnish.vcl:/etc/varnish/default.vcl:ro
-      - varnish-data:/var/lib/varnish
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.magento.entrypoints=http"
       - "traefik.http.routers.magento.rule=Host(`magento.localhost`)"
+    volumes:
+      - ./.docker/etc-magento/varnish.vcl:/etc/varnish/default.vcl:ro
+      - varnish-data:/var/lib/varnish
     hostname: magento-varnish
   nginx:
     image: nginx:stable
@@ -37,14 +42,14 @@ services:
         PHP_VERSION: ${PHP_VERSION:-7.3}
         NODE_VERSION: ${NODE_VERSION:-12}
         USER_ID: ${USER_ID:-1000}
+    environment:
+      PHP_IDE_CONFIG: serverName=magento
+      MAGE_MODE: developer
     volumes:
       - ${COMPOSER_HOME:-~/.config/composer}:/home/magento/.composer
       - ${COMPOSER_CACHE_DIR:-~/.cache/composer}:/home/magento/.composer/cache
       - ${MAGENTO_ROOT_DIR:-.}:/srv/magento
       - ${MAGENTO_MEDIA_DIR:-./pub/media}:/srv/magento/pub/media
-    environment:
-      PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-serverName=magento}
-      MAGE_MODE: developer
     hostname: magento
   mysql:
     image: mysql:5.7
@@ -53,22 +58,22 @@ services:
       MYSQL_DATABASE: magento
       MYSQL_USER: magento
       MYSQL_PASSWORD: magento
-    volumes:
-      - ./.docker/etc-magento/mysqld.cnf:/etc/mysql/conf.d/magento.cnf:ro
-      - mysql-data:/var/lib/mysql
     labels:
       - "traefik.enable=true"
       - "traefik.tcp.routers.mysql.entrypoints=mysql"
       - "traefik.tcp.routers.mysql.rule=HostSNI(`*`)"
+    volumes:
+      - ./.docker/etc-magento/mysqld.cnf:/etc/mysql/conf.d/magento.cnf:ro
+      - mysql-data:/var/lib/mysql
     hostname: magento-mysql
   redis:
     image: redis:5.0
-    volumes:
-      - redis-data:/data
     labels:
       - "traefik.enable=true"
       - "traefik.tcp.routers.redis.entrypoints=redis"
       - "traefik.tcp.routers.redis.rule=HostSNI(`*`)"
+    volumes:
+      - redis-data:/data
     hostname: magento-redis
   elasticsearch:
     build:
