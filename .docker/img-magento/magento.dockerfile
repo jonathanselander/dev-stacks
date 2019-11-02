@@ -1,4 +1,4 @@
-FROM debian:10-slim
+FROM debian:9-slim
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -42,8 +42,6 @@ ARG NODE_VERSION
 RUN test -n "${NODE_VERSION:?}"
 
 RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION:?}.x | bash - && \
-    curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
         nodejs \
