@@ -3,11 +3,18 @@ services:
   traefik:
     image: traefik:2.0
     environment:
-      TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT: "false"
-      TRAEFIK_ENTRYPOINTS_HTTP_ADDRESS: "0.0.0.0:80"
-      TRAEFIK_ENTRYPOINTS_MYSQL_ADDRESS: "0.0.0.0:3306"
-      TRAEFIK_ENTRYPOINTS_REDIS_ADDRESS: "0.0.0.0:6379"
       TRAEFIK_ACCESSLOG: "true"
+      TRAEFIK_API: "true"
+      TRAEFIK_API_INSECURE: "true"
+      TRAEFIK_ENTRYPOINTS_HTTP_ADDRESS: ":80"
+      TRAEFIK_ENTRYPOINTS_MYSQL_ADDRESS: ":3306"
+      TRAEFIK_ENTRYPOINTS_REDIS_ADDRESS: ":6379"
+      TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT: "false"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=http"
+      - "traefik.http.routers.traefik.rule=Host(`localhost`)"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
     ports:
       - 80:80
       - 3306:3306
