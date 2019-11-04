@@ -14,6 +14,12 @@ RUN apt-get update && \
         patch \
         unzip
 
+ARG NODE_VERSION
+RUN test -n "${NODE_VERSION:?}"
+
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION:?}.x | bash - && \
+    apt-get update && apt-get install -y --no-install-recommends nodejs
+
 ARG PHP_VERSION
 RUN test -n "${PHP_VERSION:?}"
 
@@ -37,15 +43,6 @@ RUN curl -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
         php$PHP_VERSION-xdebug \
         php$PHP_VERSION-xsl \
         php$PHP_VERSION-zip
-
-ARG NODE_VERSION
-RUN test -n "${NODE_VERSION:?}"
-
-RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION:?}.x | bash - && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        nodejs \
-        yarn
 
 COPY www.conf /etc/php/$PHP_VERSION/fpm/pool.d/www.conf
 COPY php.ini /etc/php/$PHP_VERSION/fpm/php.ini

@@ -2,8 +2,8 @@ version: "3.7"
 services:
   varnish:
     labels:
-      - "traefik.http.routers.hs.entrypoints=http"
-      - "traefik.http.routers.hs.rule=Host(`happysocks.localhost`)"
+      - "traefik.http.routers.happysocks.entrypoints=http"
+      - "traefik.http.routers.happysocks.rule=Host(`happysocks.localhost`)"
   magento:
     build:
       args:
