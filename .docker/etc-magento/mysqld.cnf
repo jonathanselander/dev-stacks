@@ -3,3 +3,4 @@ innodb_buffer_pool_size = 1G
 max_allowed_packet = 16M
 max_connections = 250
 performance_schema = 0
+transaction-isolation = READ-COMMITTED
