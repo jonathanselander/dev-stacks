@@ -7,7 +7,7 @@ services:
   magento:
     build:
       args:
-        PHP_VERSION: ${PHP_VERSION:-7.2}
+        PHP_VERSION: 7.2
   elasticsearch:
     build:
       dockerfile: elasticsearch-5.6.dockerfile

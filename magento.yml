@@ -46,8 +46,8 @@ services:
       context: ./.docker/img-magento
       dockerfile: magento.dockerfile
       args:
-        PHP_VERSION: ${PHP_VERSION:-7.3}
-        NODE_VERSION: ${NODE_VERSION:-12}
+        PHP_VERSION: 7.3
+        NODE_VERSION: 12
         USER_ID: ${USER_ID:-1000}
     environment:
       PHP_IDE_CONFIG: serverName=magento
@@ -70,7 +70,7 @@ services:
       - "traefik.tcp.routers.mysql.entrypoints=mysql"
       - "traefik.tcp.routers.mysql.rule=HostSNI(`*`)"
     volumes:
-      - ./.docker/etc-magento/mysqld.cnf:/etc/mysql/conf.d/magento.cnf:ro
+      - ./.docker/etc-magento/mysql.cnf:/etc/mysql/conf.d/magento.cnf:ro
       - mysql-data:/var/lib/mysql
     hostname: magento-mysql
   redis:
