@@ -8,6 +8,7 @@ services:
     build:
       args:
         PHP_VERSION: 7.2
+        NODE_VERSION: 8
   elasticsearch:
     build:
       dockerfile: elasticsearch-5.6.dockerfile
