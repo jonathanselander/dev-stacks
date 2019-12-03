@@ -57,6 +57,9 @@ RUN curl https://getcomposer.org/installer | \
         --install-dir=/usr/local/bin \
         --filename=composer
 
+RUN curl -o /usr/local/bin/cachetool http://gordalina.github.io/cachetool/downloads/cachetool.phar && \
+    chmod 755 /usr/local/bin/cachetool
+
 RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun2.phar && \
     chmod 755 /usr/local/bin/magerun
 
