@@ -14,12 +14,6 @@ RUN apt-get update && \
         patch \
         unzip
 
-ARG NODE_VERSION
-RUN test -n "${NODE_VERSION:?}"
-
-RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION:?}.x | bash - && \
-    apt-get update && apt-get install -y --no-install-recommends nodejs
-
 ARG PHP_VERSION
 RUN test -n "${PHP_VERSION:?}"
 
@@ -30,13 +24,12 @@ RUN curl -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
         php$PHP_VERSION-common \
         php$PHP_VERSION-cli \
         php$PHP_VERSION-fpm \
-        php$PHP_VERSION-curl \
         php$PHP_VERSION-bcmath \
+        php$PHP_VERSION-curl \
         php$PHP_VERSION-gd \
         php$PHP_VERSION-imagick \
         php$PHP_VERSION-intl \
         php$PHP_VERSION-mbstring \
-        `dpkg --compare-versions $PHP_VERSION lt 7.2 && echo php$PHP_VERSION-mcrypt` \
         php$PHP_VERSION-mysql \
         php$PHP_VERSION-opcache \
         php$PHP_VERSION-soap \
@@ -62,6 +55,12 @@ RUN curl -o /usr/local/bin/cachetool http://gordalina.github.io/cachetool/downlo
 
 RUN curl -o /usr/local/bin/magerun https://files.magerun.net/n98-magerun2.phar && \
     chmod 755 /usr/local/bin/magerun
+
+ARG NODE_VERSION
+RUN test -n "${NODE_VERSION:?}"
+
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION:?}.x | bash - && \
+    apt-get update && apt-get install -y --no-install-recommends nodejs
 
 ARG USER_ID
 RUN test -n "${USER_ID:?}"
