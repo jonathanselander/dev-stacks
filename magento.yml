@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   traefik:
-    image: traefik:2.0
+    image: traefik:2.1
     environment:
       TRAEFIK_ACCESSLOG: "true"
       TRAEFIK_API: "true"
@@ -23,9 +23,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     hostname: magento-traefik
   varnish:
-    build:
-      context: ./.docker/img-varnish
-      dockerfile: varnish.dockerfile
+    image: varnish:6.0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.magento.entrypoints=http"
@@ -93,7 +91,7 @@ services:
       - elasticsearch-data:/usr/share/elasticsearch/data
     hostname: magento-elasticsearch
   rabbitmq:
-    image: rabbitmq:3.7-management
+    image: rabbitmq:3.8-management
     environment:
       RABBITMQ_DEFAULT_VHOST: magento
       RABBITMQ_DEFAULT_USER: magento
