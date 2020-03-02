@@ -1,7 +1,7 @@
 [mysqld]
 innodb_buffer_pool_size = 512M
 max_allowed_packet = 16M
-max_connections = 250
+max_connections = 100
 performance_schema = 0
 transaction-isolation = READ-COMMITTED
 
