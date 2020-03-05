@@ -50,7 +50,7 @@ services:
       - ${MAGENTO_MEDIA_DIR:-./pub/media}:/srv/magento/pub/media
     hostname: magento
   mysql:
-    image: mysql:5.7
+    image: mysql:5.7.28
     environment:
       MYSQL_ROOT_PASSWORD: magento
       MYSQL_DATABASE: magento

@@ -2,15 +2,69 @@ version: "3.7"
 services:
   varnish:
     labels:
-      - "traefik.http.routers.happysocks.entrypoints=http"
-      - "traefik.http.routers.happysocks.rule=Host(`happysocks.localhost`)"
+      - "traefik.http.routers.magento.rule=Host(`magento.happysocks.localhost`)"
   magento:
     build:
       args:
         PHP_VERSION: 7.2
-        NODE_VERSION: 8
   elasticsearch:
     build:
       dockerfile: elasticsearch-5.6.dockerfile
     environment:
       xpack.security.enabled: 0
+  frontend:
+    build:
+      context: ./.docker/img-happysocks
+      dockerfile: frontend.dockerfile
+      args:
+        NODE_VERSION: 12
+        USER_ID: ${USER_ID:-1000}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.entrypoints=http"
+      - "traefik.http.routers.frontend.rule=Host(`happysocks.localhost`)"
+      - "traefik.http.services.frontend.loadbalancer.server.port=8000"
+    environment:
+      NUXT_HOST: 0.0.0.0
+      NUXT_PORT: 8000
+      NODE_ENV: development
+      BASE_URL: http://happysocks.localhost
+      BASE_URL_SERVER: http://127.0.0.1:8000
+      FRONTEND_API_URL: http://api.happysocks.localhost
+      FRONTEND_API_URL_SERVER: http://api
+      PROXY_TARGET: http://varnish
+      STORYBLOK_TOKEN: ${STORYBLOK_TOKEN}
+      STORYBLOK_CACHE_TTL: 0
+      STORYBLOK_MODE: draft
+      SSL_ENABLED: 0
+      #SSL_KEY_FILE: ${SSL_KEY_FILE}
+      #SSL_CERT_FILE: ${SSL_CERT_FILE}
+      GTM_CONTAINER_ID: ${GTM_CONTAINER_ID}
+      #NEWRELIC_API_KEY: ${NEWRELIC_API_KEY}
+      #NEWRELIC_APP_NAME: ${NEWRELIC_APP_NAME}
+      HTTP_CACHE_TYPE: public
+      HTTP_CACHE_MAX_AGE: 0
+      HTTP_CACHE_STALE_WHILE_REVALIDATE: 900
+      NUXT_SSR_CACHE_LIMIT: 100
+      NUXT_SSR_CACHE_TTL: 0
+      FINDIFY_API_KEY: ${FINDIFY_API_KEY}
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
+    volumes:
+      - ${FRONTEND_ROOT_DIR:-.}:/srv/frontend
+    hostname: happysocks-frontend
+  api:
+    build:
+      context: ${API_ROOT_DIR:-.}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.entrypoints=http"
+      - "traefik.http.routers.api.rule=Host(`api.happysocks.localhost`)"
+    environment:
+      MAGENTO_DB_HOST: mysql:3306
+      MAGENTO_DB_NAME: magento
+      MAGENTO_DB_USERNAME: magento
+      MAGENTO_DB_PASSWORD: magento
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DATABASE: 3
+    hostname: happysocks-api
